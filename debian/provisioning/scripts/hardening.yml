@@ -1,0 +1,5 @@
+#Sources:
+# https://www.debian.org/doc/manuals/securing-debian-manual/index.en.html
+# https://wiki.debian.org/Hardening
+# https://github.com/geerlingguy/ansible-for-devops/blob/master/security/main.yml
+# https://github.com/ovh/debian-cis
