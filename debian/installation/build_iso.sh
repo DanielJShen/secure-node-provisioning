@@ -12,10 +12,10 @@ log() {
 
 findIsoInDir() {
   directory="${1}"
-  echo $( \
+  echo "$( \
     cd "${directory}"; \
     iso_files=(*.iso); \
-    echo "${iso_files[0]}")
+    echo "${iso_files[0]}")"
 }
 
 # Create the output dir if it doesn't exist
