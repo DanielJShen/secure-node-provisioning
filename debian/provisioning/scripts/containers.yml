@@ -1,0 +1,4 @@
+---
+- name: Install Podman
+  apt:
+    name: podman
