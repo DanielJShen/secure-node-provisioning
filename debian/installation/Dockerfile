@@ -9,6 +9,6 @@ USER root
 RUN chmod +x /opt/build_iso.sh
 #RUN echo "deb http://ftp.uk.debian.org/debian bookworm main contrib non-free" >> /etc/apt/sources.list
 RUN apt update
-RUN apt install -y udevil acl libarchive-tools cpio genisoimage qemu-system-x86 syslinux-utils
+RUN apt install -y udevil acl libarchive-tools cpio genisoimage qemu-system-x86 syslinux-utils wget
 
 ENTRYPOINT ["/opt/build_iso.sh"]

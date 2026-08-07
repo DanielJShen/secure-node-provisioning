@@ -27,7 +27,7 @@ Installs a slim Debian OS and the bare essentials for container management.
            **The device provided will be overwritten, use with care**
     4. Install the given Linux OS onto the hardware by booting from the usb
 
-       **Any connected storage may be cleared**
+       **Only empty disk space should be used, but proceed with caution**
 3. Provision the Linux OS
     1. Build the docker image `docker build --tag 'node-provisioner' ./installation`
     2. Run it with `docker run --rm node-provisioner`
