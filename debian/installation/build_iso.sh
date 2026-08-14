@@ -5,6 +5,7 @@ cd "/opt/"
 SOURCE_DIR="/opt/build/source"
 OUTPUT_DIR="/opt/build/output"
 DEFAULT_PRESEED_FILE="/opt/preseed.cfg"
+GRUB_FILE="/opt/grub.cfg"
 
 log() {
   echo "[$(date -u)] ${1}" >> "${OUTPUT_DIR}/build.log"
@@ -12,6 +13,11 @@ log() {
 
 findIsoInDir() {
   directory="${1}"
+  if ! test -d "${directory}"; then
+    echo "No dir ${directory}"
+    exit 1
+    mkdir "${directory}"
+  fi
   echo "$( \
     cd "${directory}"; \
     iso_files=(*.iso); \
@@ -48,12 +54,16 @@ mkdir isofiles
 bsdtar -C isofiles/ -xf "${ISO_PATH}"
 
 # Insert install config
+cp "${DEFAULT_PRESEED_FILE}" isofiles/
 chmod +w -R isofiles/install.amd/
 gunzip isofiles/install.amd/initrd.gz
-echo "${PRESEED_PATH}" \
+echo "preseed.cfg" \
  | cpio -H newc -o -A -F isofiles/install.amd/initrd
 gzip isofiles/install.amd/initrd
 chmod -w -R isofiles/install.amd/
+
+# Update grub
+cp "${GRUB_FILE}" isofiles/boot/grub/grub.cfg
 
 # Regenerate MD5 Checksum
 cd isofiles
@@ -65,11 +75,19 @@ chmod -w md5sum.txt
 cd ..
 
 # Build the new ISO
-genisoimage -r -J -b isolinux/isolinux.bin -c isolinux/boot.cat \
-            -no-emul-boot -boot-load-size 4 -boot-info-table \
-            -o "${OUTPUT_DIR}/preseed-debian.iso" isofiles
+#genisoimage -r -J -b isolinux/isolinux.bin -c isolinux/boot.cat \
+#            -no-emul-boot -boot-load-size 4 -boot-info-table \
+#            -e boot/grub/efi.img \
+#            -o "${OUTPUT_DIR}/preseed-debian.iso" isofiles
 
 # Make the ISO bootable
-isohybrid "${OUTPUT_DIR}/preseed-debian.iso"
+#isohybrid "${OUTPUT_DIR}/preseed-debian.iso"
+
+xorriso -as mkisofs -o "${OUTPUT_DIR}/preseed-debian.iso" \
+        -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin \
+        -c isolinux/boot.cat -b isolinux/isolinux.bin -no-emul-boot \
+        -boot-load-size 4 -boot-info-table \
+        -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -isohybrid-gpt-basdat \
+        isofiles
 
 log "ISO Created successfully at 'build/output/preseed-debian.iso'"
