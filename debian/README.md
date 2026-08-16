@@ -31,4 +31,4 @@ Installs a slim Debian OS and the bare essentials for container management.
        **A disk will be overwritten, proceed with caution!**
 3. Provision the Linux OS
     1. Build the docker image `docker build --tag 'debian-provisioner' ./provisioning`
-    2. Run it with `docker run --rm debian-provisioner <host> <sshKey>`
+    2. Run it with `docker run --rm -v "$(pwd)/provisioning/build/output:/opt/build/output"  debian-provisioner <host> <sshKey> <initialSshPassword>`
