@@ -18,3 +18,14 @@
     - vars.yml
   tasks:
     - import_tasks: scripts/containers.yml
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Remove temporary provisioning user
+      user:
+        name: "provisioner"
+        state: absent
+        remove: true
+        force: true
+        failed_when: false

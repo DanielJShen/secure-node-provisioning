@@ -27,14 +27,6 @@
     validate: 'visudo -cf %s'
 
 # Use secure and encrypted communication.
-- name: Allow sshd to listen on tcp port 2849.
-  seport:
-    ports: 2849
-    proto: tcp
-    setype: ssh_port_t
-    state: present
-  when: ansible_selinux.status == 'enabled'
-
 - name: Update SSH configuration to be more secure.
   lineinfile:
     dest: /etc/ssh/sshd_config
@@ -92,7 +84,7 @@
   firewalld:
     state: "{{ item.state }}"
     port: "{{ item.port }}"
-    zone: external
+    zone: public
     immediate: yes
     permanent: yes
   with_items:
@@ -124,3 +116,15 @@
   selinux:
     policy: default
     state: enforcing
+
+- name: Install SELinux utilities
+  apt:
+    name: policycoreutils-python-utils
+    state: present
+- name: Allow sshd to listen on tcp port 2849.
+  seport:
+    ports: 2849
+    proto: tcp
+    setype: ssh_port_t
+    ignore_selinux_state: true
+    state: present
