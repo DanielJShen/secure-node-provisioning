@@ -1,0 +1,5 @@
+.talos/
+.kube/
+.terraform/
+*.tfstate*
+*.lock*

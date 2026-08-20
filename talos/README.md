@@ -4,6 +4,11 @@ Installs Talos OS onto a bare-metal machine and manages it with Terraform
 
 ### Usage
 
+#### Prerequisits
+
+- Docker
+- A usb to install a Talos iso to
+
 #### OS Install
 Follow the below steps or use any of the other installation options on https://factory.talos.dev
 
@@ -16,11 +21,20 @@ Follow the below steps or use any of the other installation options on https://f
    sudo cp <downloadedIsoName>.iso /dev/disk/by-id/<usb-id>
    sudo sync
    ```
-3. Boot the target machine from the usb and select the first entry to run Talos
+3. Boot the target machine from the usb
+   1. Select the first entry if Talos is not already installed
+   2. Select the second entry to reset the installed Talos and then after it has reset select the first entry
 4. Press F3 on the machine and configure the network settings
    You may need to set a static IP and disable EEE in the router settings
 
-#### Provision with Terraform
+#### Provision
 
-1. Run the terraform apply script with the machines IP (displayed on the machine if the network setup was successful)
-2.
+##### With Terraform
+
+1. Update `terraform/terraform.tfvars` with the machines IP (displayed on the machine if the network setup was successful)
+2. Run `terraform/plan.sh` to view the terraform plan
+3. Run `terraform/apply.sh` to setup the machine
+
+##### With talosctl
+
+1.

@@ -8,9 +8,9 @@ resource "talos_machine_secrets" "this" {
 # Determine the installer image
 locals {
   installer_image = var.schematic_id != "" ? (
-  "factory.talos.dev/installer/${var.schematic_id}:${var.talos_version}"
-  ) : (
-  "ghcr.io/siderolabs/installer:${var.talos_version}"
+    "factory.talos.dev/installer/${var.schematic_id}:${var.talos_version}"
+    ) : (
+    "ghcr.io/siderolabs/installer:${var.talos_version}"
   )
   cluster_endpoint = "https://${var.cluster_vip}:6443"
 }
@@ -38,23 +38,23 @@ data "talos_machine_configuration" "controlplane" {
 }
 
 # Worker configuration
-data "talos_machine_configuration" "worker" {
-  cluster_name       = var.cluster_name
-  machine_type       = "worker"
-  cluster_endpoint   = local.cluster_endpoint
-  machine_secrets    = talos_machine_secrets.this.machine_secrets
-  kubernetes_version = var.kubernetes_version
-
-  config_patches = [
-    yamlencode({
-      machine = {
-        install = {
-          image = local.installer_image
-        }
-      }
-    })
-  ]
-}
+#data "talos_machine_configuration" "worker" {
+#  cluster_name       = var.cluster_name
+#  machine_type       = "worker"
+#  cluster_endpoint   = local.cluster_endpoint
+#  machine_secrets    = talos_machine_secrets.this.machine_secrets
+#  kubernetes_version = var.kubernetes_version
+#
+#  config_patches = [
+#    yamlencode({
+#      machine = {
+#        install = {
+#          image = local.installer_image
+#        }
+#      }
+#    })
+#  ]
+#}
 
 # Step 3: Apply configurations
 
@@ -66,40 +66,39 @@ resource "talos_machine_configuration_apply" "controlplane" {
   machine_configuration_input = data.talos_machine_configuration.controlplane.machine_configuration
   node                        = var.controlplane_ips[count.index]
 
-  config_patches = [
-    yamlencode({
-      machine = {
-        network = {
-          hostname = "${var.cluster_name}-control-${count.index}"
-        }
-      }
-    })
-  ]
+  #  config_patches = [
+  #    yamlencode({
+  #      machine = {
+  #        network = {
+  #          hostname = "${var.cluster_name}-control-${count.index}"
+  #        }
+  #      }
+  #    })
+  #  ]
 }
 
 # Apply worker configurations
-resource "talos_machine_configuration_apply" "worker" {
-  count = var.worker_count
-
-  depends_on = [talos_machine_bootstrap.this]
-
-  client_configuration        = talos_machine_secrets.this.client_configuration
-  machine_configuration_input = data.talos_machine_configuration.worker.machine_configuration
-  node                        = var.worker_ips[count.index]
-
-  config_patches = [
-    yamlencode({
-      machine = {
-        network = {
-          hostname = "${var.cluster_name}-worker-${count.index}"
-        }
-      }
-    })
-  ]
-}
+#resource "talos_machine_configuration_apply" "worker" {
+#  count = var.worker_count
+#
+#  depends_on = [talos_machine_bootstrap.this]
+#
+#  client_configuration        = talos_machine_secrets.this.client_configuration
+#  machine_configuration_input = data.talos_machine_configuration.worker.machine_configuration
+#  node                        = var.worker_ips[count.index]
+#
+#  config_patches = [
+#    yamlencode({
+#      machine = {
+#        network = {
+#          hostname = "${var.cluster_name}-worker-${count.index}"
+#        }
+#      }
+#    })
+#  ]
+#}
 
 # Step 4: Bootstrap
-
 resource "talos_machine_bootstrap" "this" {
   depends_on = [
     talos_machine_configuration_apply.controlplane
