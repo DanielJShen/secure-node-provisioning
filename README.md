@@ -8,3 +8,7 @@ The repo has directories with different provisioning methods and resulting Opera
 
 - debian - Automated installation of Debian and a post-install ansible script to provision
 - talos - Automated installation of Talos and some Terraform config to provision it
+
+### Notes
+
+For full provisioning, talos provisioned with talosctl has the most complete solution
