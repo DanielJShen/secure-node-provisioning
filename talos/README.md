@@ -44,5 +44,5 @@ Follow the below steps or use any of the other installation options on https://f
 2. Visit ArgoCD
   1. Run `kubectl port-forward svc/argocd-server -n argocd 8080:443 --kubeconfig='.kube/config'`
   2. Visit `localhost:8080`
-  3. Get the password with `kubectl get secret argocd-initial-admin-secret -n argocd --kubeconfig='.kube/config' -o json`
+  3. Get the password with `kubectl get secret argocd-initial-admin-secret -n argocd --kubeconfig='.kube/config' -o json | jq -r '.data.password' | base64 -d`
   4. Login with username `admin` and the fetched password

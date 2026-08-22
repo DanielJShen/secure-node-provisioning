@@ -19,9 +19,9 @@ if [[ "${prompt1}" =~ [yY](es)* ]]; then
     --output "${SCRIPT_DIR}/build/"  --output-types "controlplane" --output-types "talosconfig" --force \
     --with-docs --config-patch "${SCRIPT_DIR}/machine-patch.yaml" --config-patch-control-plane "${SCRIPT_DIR}/build/kustomize/argocd-manifest-final.yaml"
 
-  echo "###"
-  echo "Configured to install to disk '${INSTALL_DISK}' with name '${INSTALL_DISK_NAME}'"
-  echo "###"
+  BLUE='\033[0;36m'
+  NC='\033[0m'
+  echo -e "${BLUE}###\nConfigured to install to disk '${INSTALL_DISK}' with name '${INSTALL_DISK_NAME}'\n###${NC}"
 fi
 
 read -p "Apply config? Installs on the disk. <Y/n> " prompt2
@@ -34,7 +34,7 @@ if [[ "${prompt2}" =~ [yY](es)* ]]; then
   talosctl --talosconfig="${TALOS_CONFIG_FILE}" config endpoints "${CONTROL_PLANE_IP}"
 fi
 
-read -p "Run Bootstrap? Must only be done once and only after config is applied. <Y/n> " prompt3
+read -p "Run Bootstrap? Must only be done once and only after the config is applied and the machine rebooted. <Y/n> " prompt3
 if [[ "${prompt3}" =~ [yY](es)* ]]; then
 
   talosctl bootstrap --nodes "${CONTROL_PLANE_IP}" --talosconfig="${TALOS_CONFIG_FILE}"
