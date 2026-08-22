@@ -7,7 +7,7 @@ Installs Talos OS onto a bare-metal machine and manages it with Terraform
 #### Prerequisits
 
 - Docker for kubernetes provisioning
-- talosctl for talosctl provisioning
+- talosctl (v1.14+) and kubectl for talosctl provisioning
 - A usb to install a Talos iso to
 
 #### OS Install

@@ -1,0 +1,7 @@
+cluster:
+  network:
+    dnsDomain: cluster.local # Kubernetes DNS domain
+
+machine:
+  install:
+    wipe: true
