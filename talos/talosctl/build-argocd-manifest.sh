@@ -28,7 +28,7 @@ kubectl kustomize "$(dirname "${KUSTOMIZATION_FILE}")" | sed -e 's/^/  /' > "${K
 cat <<EOF | cat - "${KUSTOMIZED_MANIFEST_FILE}" > "${OUTPUT_MANIFEST_FILE}"
 apiVersion: v1alpha1
 kind: KubeInlineManifestConfig
-name: argocd_install
+name: argocd-install
 manifest: |-
   apiVersion: v1
   kind: Namespace

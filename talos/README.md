@@ -8,13 +8,15 @@ Installs Talos OS onto a bare-metal machine and manages it with Terraform
 
 - Docker for kubernetes provisioning
 - talosctl (v1.14+) and kubectl for talosctl provisioning
+- jq for talosctl provisioning
 - A usb to install a Talos iso to
 
 #### OS Install
 Follow the below steps or use any of the other installation options on https://factory.talos.dev
 
 1. Download the image from https://factory.talos.dev
-   1. Example: https://factory.talos.dev/?arch=amd64&platform=metal&schematic-id=9c1d1b442d73f96dcd04e81463eb20000ab014062d22e1b083e1773336bc1dd5&secureboot=true&target=metal&$
+   1. Must match the talosctl version or talos version in variables.tf
+   2. Example: https://factory.talos.dev/?arch=amd64&platform=metal&schematic-id=9c1d1b442d73f96dcd04e81463eb20000ab014062d22e1b083e1773336bc1dd5&secureboot=true&target=metal&$
 2. Make a bootable usb from the iso
    1. Unmount the USB if mounted
    2. Apply the iso to the usb:
@@ -39,3 +41,8 @@ Follow the below steps or use any of the other installation options on https://f
 ##### With talosctl
 
 1. Run `talosctl/provision.sh <MACHINE_IP>` (MACHINE_IP displayed on the machine if the network setup was successful)
+2. Visit ArgoCD
+  1. Run `kubectl port-forward svc/argocd-server -n argocd 8080:443 --kubeconfig='.kube/config'`
+  2. Visit `localhost:8080`
+  3. Get the password with `kubectl get secret argocd-initial-admin-secret -n argocd --kubeconfig='.kube/config' -o json`
+  4. Login with username `admin` and the fetched password
