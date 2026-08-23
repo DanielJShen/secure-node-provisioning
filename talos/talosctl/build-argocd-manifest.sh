@@ -56,10 +56,10 @@ spec:
       repoURL: ${repo_url}
       revision: HEAD
       directories:
-      - path: "*"
+      - path: "*/*"
   template:
     metadata:
-      name: '{{path.basename}}'
+      name: '{{path.basenameNormalized}}'
     spec:
       project: default
       source:
@@ -68,11 +68,12 @@ spec:
         path: '{{path}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: core
+        namespace: "{{index .path.segments 0}}"
       syncPolicy:
+        preserveResourcesOnDeletion: true
         automated:
-          prune: true
-          selfHeal: true
+          prune: false
+          selfHeal: false
           enabled: false
         syncOptions:
           - ServerSideApply=true

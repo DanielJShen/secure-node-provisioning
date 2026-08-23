@@ -40,7 +40,8 @@ Follow the below steps or use any of the other installation options on https://f
 
 ##### With talosctl
 
-1. Run `talosctl/provision.sh <MACHINE_IP>` (MACHINE_IP displayed on the machine if the network setup was successful)
+1. Run `talosctl/provision.sh <MACHINE_IP>` and follow prompts (MACHINE_IP displayed on the machine if the network setup was successful)
+  1. If providing a git repository, you can add applications by having directory structure `<namespace>/<appName>/kustomize.yaml` in the provided repo
 2. Visit ArgoCD
   1. Run `kubectl port-forward svc/argocd-server -n argocd 8080:443 --kubeconfig='.kube/config'`
   2. Visit `localhost:8080`
