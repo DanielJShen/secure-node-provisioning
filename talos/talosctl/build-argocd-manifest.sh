@@ -51,6 +51,8 @@ metadata:
   name: app-generator
   namespace: argocd
 spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true
   generators:
   - git:
       repoURL: ${repo_url}
@@ -59,18 +61,17 @@ spec:
       - path: "*/*"
   template:
     metadata:
-      name: '{{path.basenameNormalized}}'
+      name: "{{path.basenameNormalized}}"
     spec:
       project: default
       source:
         repoURL: ${repo_url}
         targetRevision: HEAD
-        path: '{{path}}'
+        path: "{{path}}"
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{index .path.segments 0}}"
+        namespace: "{{path[0]}}"
       syncPolicy:
-        preserveResourcesOnDeletion: true
         automated:
           prune: false
           selfHeal: false
