@@ -5,5 +5,5 @@ taints:
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
-hostname: talos.local # Node hostname
+hostname: server.local # Node hostname
 auto: off
