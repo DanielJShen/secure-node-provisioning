@@ -15,7 +15,8 @@ Follow the below steps or use any of the other installation options on https://f
 
 1. Download the image from https://factory.talos.dev
    1. Must match the talosctl version or talos version in variables.tf
-   2. Example: https://factory.talos.dev/?arch=amd64&platform=metal&schematic-id=3a33ec6dfc8cfd61d2a3db3caf97894f31e913952d71ce3c3fbbe565a3f08339&secureboot=true&target=metal&$
+   2. Some storage provisioners require extensions siderolabs/iscsi-tools and siderolabs/util-linux-tools
+   3. Example: https://factory.talos.dev/?arch=amd64&platform=metal&schematic-id=3a33ec6dfc8cfd61d2a3db3caf97894f31e913952d71ce3c3fbbe565a3f08339&secureboot=true&target=metal&$
 2. Make a bootable usb from the iso
    1. Unmount the USB if mounted
    2. Apply the iso to the usb:
