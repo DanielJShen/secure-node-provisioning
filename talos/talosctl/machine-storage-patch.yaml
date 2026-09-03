@@ -1,0 +1,30 @@
+# For kubernetes, stores container data, downloaded images, logs, and etcd data
+# Can be 20GB for small clusters or up to 500GB for large production clusters and ML container images
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+provisioning:
+  minSize: 100GiB
+  maxSize: 15%
+  grow: true
+---
+# A local storage using the rest of the install disk
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: local-storage-1
+volumeType: partition
+provisioning:
+  diskSelector:
+    match: system_disk && disk.readonly == false && disk.size >= 400u * GiB
+  minSize: 50GB
+  maxSize: 85%
+  grow: true
+---
+# A local storage using a second disk
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: local-storage-2
+volumeType: disk
+provisioning:
+  diskSelector:
+    match: !system_disk && disk.readonly == false && disk.size >= 100u * GiB
