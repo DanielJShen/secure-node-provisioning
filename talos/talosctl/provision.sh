@@ -7,7 +7,7 @@ CLUSTER_NAME="${2:-main}"
 TALOSCTL_IMAGE="${3:-v1.14.0-rc.1}"
 
 function docker_talosctl {
-  docker run --rm -v "$(pwd):/opt/" -w "/opt/"  "ghcr.io/siderolabs/talosctl:${TALOSCTL_IMAGE}" $@
+  docker run --rm -it -v "$(pwd):/opt/" -w "/opt/"  "ghcr.io/siderolabs/talosctl:${TALOSCTL_IMAGE}" $@
 }
 
 TALOS_CONFIG_FILE="${SCRIPT_DIR}/build/talosconfig"

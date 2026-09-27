@@ -24,7 +24,9 @@ provisioning:
 apiVersion: v1alpha1
 kind: UserVolumeConfig
 name: local-storage-2
-volumeType: disk
+volumeType: partition
 provisioning:
   diskSelector:
     match: !system_disk && disk.readonly == false && disk.size >= 100u * GiB
+  grow: true
+  minSize: 100GB
